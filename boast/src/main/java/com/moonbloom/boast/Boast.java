@@ -117,12 +117,37 @@ public final class Boast {
      * Create and automatically show a {@link Boast}.
      *
      * @param context Used to create internal {@link Toast} & inflate view.
+     * @param textResourceId ID of the text resource to show in the {@link Boast}.
+     */
+    public static void makeText(Context context, int textResourceId) {
+        makeText(context, context.getResources().getString(textResourceId));
+    }
+
+    /**
+     * Create and automatically show a {@link Boast}.
+     *
+     * @param context Used to create internal {@link Toast} & inflate view.
+     * @param textResourceId ID of the text resource to show in the {@link Boast}.
+     * @param style {@link BStyle} e.g. {@link BStyle#INFO}).
+     */
+    public static void makeText(Context context, int textResourceId, BStyle style) {
+        makeText(context, context.getResources().getString(textResourceId), style);
+    }
+
+    /**
+     * Create and automatically show a {@link Boast}.
+     *
+     * @param context Used to create internal {@link Toast} & inflate view.
      * @param layoutResource Resource layout e.g. R.layout.custom_toast_layout.
      * @param textViewId TextView ID e.g. R.id.custom_toast_text.
      * @param text Text to show in the {@link Boast}.
      */
     public static void makeText(Context context, int layoutResource, int textViewId, CharSequence text) {
         inflateFromResource(context, layoutResource, textViewId, text, defaultBStyle);
+    }
+
+    public static void makeText(Context context, int layoutResource, int textViewId, int textResourceId) {
+        inflateFromResource(context, layoutResource, textViewId, context.getResources().getString(textResourceId), defaultBStyle);
     }
     //endregion
 
