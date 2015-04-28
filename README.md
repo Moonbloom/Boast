@@ -32,7 +32,7 @@ Create a Boast with a String from your application's resources:
 Create a Boast with a String from your application's resources and a specific BStyle:
 
 	Boast.makeText(Context, int, BStyle);
-	
+
 ## Basic Examples
 Currently there are 4 different BStyles you can use out of the box (Or you can create your own, be creative!):
 
@@ -50,6 +50,9 @@ In general you can modify:
 - Displayed image
 - Image position
 
+## Developer
+- [Kasper Hübner Liholm] (https://www.linkedin.com/profile/view?id=330373856)
+
 ## License
 
-* [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+- [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
