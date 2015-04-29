@@ -16,7 +16,7 @@ public final class BStyle {
     public static final BStyle CAUTION;
 
     /** Green background color ({@link BConstants#materialGreen}) */
-    public static final BStyle INFO;
+    public static final BStyle OK;
 
     /** Blue background color ({@link BConstants#materialBlue}) */
     public static final BStyle MESSAGE;
@@ -32,7 +32,7 @@ public final class BStyle {
                 .setDuration(BConstants.BDuration.Long)
                 .build();
 
-        INFO = new Builder()
+        OK = new Builder()
                 .setBackgroundColorValue(BConstants.materialGreen)
                 .build();
 
@@ -53,11 +53,11 @@ public final class BStyle {
     /** The text color value e.g. 0xffff4444. */
     final int textColorValue;
 
-    /** The height of the {@link Boast} in pixels. */
-    final int heightInPixels;
+    /** The height of the {@link Boast}. */
+    final int layoutHeight;
 
-    /** The width of the {@link Boast} in pixels. */
-    final int widthInPixels;
+    /** The width of the {@link Boast}. */
+    final int layoutWidth;
 
     /** The text's gravity as provided by {@link BConstants.BTextGravity}. */
     final BConstants.BTextGravity textGravity;
@@ -74,14 +74,20 @@ public final class BStyle {
     /** The text size in sp. */
     final int textSize;
 
-    /** The horizontal padding for the contentView in pixels. */
-    final int horizontalPaddingInPixels;
+    /** The horizontal padding for the contentView. */
+    final int horizontalPadding;
 
-    /** The vertical padding for the contentView in pixels. */
-    final int verticalPaddingInPixels;
+    /** The vertical padding for the contentView. */
+    final int verticalPadding;
 
     /** The duration that the {@link Boast} should be shown e.g. {@link BConstants.BDuration#Short}. */
     final BConstants.BDuration duration;
+
+    /** The height of the image */
+    final int imageHeight;
+
+    /** The width of the image */
+    final int imageWidth;
 
     /** Determines if showing a 2nd {@link Boast}, the 1st {@link Boast} should be immediately cancelled. */
     final boolean autoCancel;
@@ -93,16 +99,18 @@ public final class BStyle {
         this.backgroundColorValue = builder.backgroundColorValue;
         this.textColorResourceId = builder.textColorResourceId;
         this.textColorValue = builder.textColorValue;
-        this.heightInPixels = builder.heightInPixels;
-        this.widthInPixels = builder.widthInPixels;
+        this.layoutHeight = builder.layoutHeight;
+        this.layoutWidth = builder.layoutWidth;
         this.textGravity = builder.textGravity;
         this.imageDrawable = builder.imageDrawable;
         this.imageResourceId = builder.imageResourceId;
         this.imageGravity = builder.imageGravity;
         this.textSize = builder.textSize;
-        this.horizontalPaddingInPixels = builder.horizontalPaddingInPixels;
-        this.verticalPaddingInPixels = builder.verticalPaddingInPixels;
+        this.horizontalPadding = builder.horizontalPadding;
+        this.verticalPadding = builder.verticalPadding;
         this.duration = builder.duration;
+        this.imageHeight = builder.imageHeight;
+        this.imageWidth = builder.imageWidth;
         this.autoCancel = builder.autoCancel;
     }
     //endregion
@@ -114,16 +122,18 @@ public final class BStyle {
         private int backgroundColorValue;
         private int textColorResourceId;
         private int textColorValue;
-        private int heightInPixels;
-        private int widthInPixels;
+        private int layoutHeight;
+        private int layoutWidth;
         private BConstants.BTextGravity textGravity;
         private Drawable imageDrawable;
         private int imageResourceId;
         private BConstants.BImageGravity imageGravity;
         private int textSize;
-        private int horizontalPaddingInPixels;
-        private int verticalPaddingInPixels;
+        private int horizontalPadding;
+        private int verticalPadding;
         private BConstants.BDuration duration;
+        private int imageHeight;
+        private int imageWidth;
         private boolean autoCancel;
 
         /** Creates a {@link Builder} to build a {@link BStyle} upon. */
@@ -132,16 +142,18 @@ public final class BStyle {
             backgroundColorValue = BConstants.NOT_SET; //Is set by default according to different styles in the static block initializer
             textColorResourceId = android.R.color.white;
             textColorValue = BConstants.NOT_SET;
-            heightInPixels = ViewGroup.LayoutParams.WRAP_CONTENT;
-            widthInPixels = ViewGroup.LayoutParams.WRAP_CONTENT;
+            layoutHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
+            layoutWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
             textGravity = BConstants.BTextGravity.Center;
             imageDrawable = null;
             imageResourceId = BConstants.NOT_SET;
             imageGravity = BConstants.BImageGravity.Left;
             textSize = 0;
-            horizontalPaddingInPixels = 24;
-            verticalPaddingInPixels = 14;
+            horizontalPadding = 24;
+            verticalPadding = 14;
             duration = BConstants.BDuration.Short;
+            imageHeight = 50;
+            imageWidth = 50;
             autoCancel = true;
         }
 
@@ -155,16 +167,18 @@ public final class BStyle {
             this.backgroundColorValue = baseStyle.backgroundColorValue;
             this.textColorResourceId = baseStyle.textColorResourceId;
             this.textColorValue = baseStyle.textColorValue;
-            this.heightInPixels = baseStyle.heightInPixels;
-            this.widthInPixels = baseStyle.widthInPixels;
+            this.layoutHeight = baseStyle.layoutHeight;
+            this.layoutWidth = baseStyle.layoutWidth;
             this.textGravity = baseStyle.textGravity;
             this.imageDrawable = baseStyle.imageDrawable;
             this.imageResourceId = baseStyle.imageResourceId;
             this.imageGravity = baseStyle.imageGravity;
             this.textSize = baseStyle.textSize;
-            this.horizontalPaddingInPixels = baseStyle.horizontalPaddingInPixels;
-            this.verticalPaddingInPixels = baseStyle.verticalPaddingInPixels;
+            this.horizontalPadding = baseStyle.horizontalPadding;
+            this.verticalPadding = baseStyle.verticalPadding;
             this.duration = baseStyle.duration;
+            this.imageHeight = baseStyle.imageHeight;
+            this.imageWidth = baseStyle.imageWidth;
             this.autoCancel = baseStyle.autoCancel;
         }
 
@@ -233,30 +247,32 @@ public final class BStyle {
         }
 
         /**
-         * Set the heightInPixels option for the {@link Boast}.
+         * Set the layoutHeight option for the {@link Boast}.
          * <br/>
          * Default value: {@link ViewGroup.LayoutParams#WRAP_CONTENT}.
          *
-         * @param height The height of the {@link Boast} in pixels. Can also be {@link ViewGroup.LayoutParams#MATCH_PARENT} or {@link ViewGroup.LayoutParams#WRAP_CONTENT}.
+         * @param height The height of the {@link Boast}. Can also be {@link ViewGroup.LayoutParams#MATCH_PARENT} or {@link ViewGroup.LayoutParams#WRAP_CONTENT}.
          *
          * @return the {@link Builder}.
          */
+        @Deprecated
         public Builder setHeight(int height) {
-            this.heightInPixels = height;
+            this.layoutHeight = height;
             return this;
         }
 
         /**
-         * Set the widthInPixels option for the {@link Boast}.
+         * Set the layoutWidth option for the {@link Boast}.
          * <br/>
          * Default value: {@link ViewGroup.LayoutParams#WRAP_CONTENT}.
          *
-         * @param width The width of the {@link Boast} in pixels. Can also be {@link ViewGroup.LayoutParams#MATCH_PARENT} or {@link ViewGroup.LayoutParams#WRAP_CONTENT}.
+         * @param width The width of the {@link Boast}. Can also be {@link ViewGroup.LayoutParams#MATCH_PARENT} or {@link ViewGroup.LayoutParams#WRAP_CONTENT}.
          *
          * @return the {@link Builder}.
          */
+        @Deprecated
         public Builder setWidth(int width) {
-            this.widthInPixels = width;
+            this.layoutWidth = width;
             return this;
         }
 
@@ -327,34 +343,34 @@ public final class BStyle {
          *
          * @return The {@link Builder}.
          */
-        public Builder setTextScize(int textSize) {
+        public Builder setTextSize(int textSize) {
             this.textSize = textSize;
             return this;
         }
 
         /**
-         * Set the horizontal and vertical padding for the {@link Boast} view's content in pixels.
+         * Set the horizontal and vertical padding for the {@link Boast} view's content.
          * <br/>
          * The values will be converted to dp to allow proper scaling on multiple screen sizes.
          * <br/>
          * Default horizontal value: 24.
          * Default vertical value: 14.
          *
-         * @param horizontalPaddingPx The horizontal padding in pixels.
-         * @param verticalPaddingPx The vertical padding in pixels.
+         * @param horizontalPadding The horizontal padding.
+         * @param verticalPadding The vertical padding.
          *
          * @return The {@link Builder}.
          */
-        public Builder setPaddingInPixels(int horizontalPaddingPx, int verticalPaddingPx) {
-            this.horizontalPaddingInPixels = horizontalPaddingPx;
-            this.verticalPaddingInPixels = verticalPaddingPx;
+        public Builder setPadding(int horizontalPadding, int verticalPadding) {
+            this.horizontalPadding = horizontalPadding;
+            this.verticalPadding = verticalPadding;
             return this;
         }
 
         /**
          * Set the duration for the {@link Boast}.
          * <br/>
-         * Default value: {@link BConstants.BDuration#Short} for {@link BStyle#INFO} and {@link BStyle#MESSAGE}, {@link BConstants.BDuration#Long} for {@link BStyle#CAUTION} and {@link BStyle#ALERT}.
+         * Default value: {@link BConstants.BDuration#Short} for {@link BStyle#OK} and {@link BStyle#MESSAGE}, {@link BConstants.BDuration#Long} for {@link BStyle#CAUTION} and {@link BStyle#ALERT}.
          *
          * @param duration The duration e.g. {@link BConstants.BDuration#Short}.
          *
@@ -362,6 +378,38 @@ public final class BStyle {
          */
         public Builder setDuration(BConstants.BDuration duration) {
             this.duration = duration;
+            return this;
+        }
+
+        /**
+         * Set the image height of the image in the {@link Boast}.
+         * <br/>
+         * The values will be converted to dp to allow proper scaling on multiple screen sizes.
+         * <br/>
+         * Default value: 80.
+         *
+         * @param imageHeight The image height.
+         *
+         * @return The {@link Builder}.
+         */
+        public Builder setImageHeight(int imageHeight) {
+            this.imageHeight = imageHeight;
+            return this;
+        }
+
+        /**
+         * Set the image width of the image in the {@link Boast}.
+         * <br/>
+         * The values will be converted to dp to allow proper scaling on multiple screen sizes.
+         * <br/>
+         * Default value: 80.
+         *
+         * @param imageWidth The image width.
+         *
+         * @return The {@link Builder}.
+         */
+        public Builder setImageWidth(int imageWidth) {
+            this.imageWidth = imageWidth;
             return this;
         }
 

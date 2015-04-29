@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
 
                 switch (differentStylesCounter) {
                     case 1:
-                        style = BStyle.INFO;
+                        style = BStyle.OK;
                         break;
 
                     case 2:
@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
                         break;
 
                     default:
-                        style = BStyle.INFO;
+                        style = BStyle.OK;
                         break;
                 }
 
@@ -60,13 +60,43 @@ public class MainActivity extends Activity {
             }
         });
 
-        Button customStyleButton = (Button) findViewById(R.id.custom_style_button);
-        customStyleButton.setOnClickListener(new View.OnClickListener() {
+        Button customStyleOneButton = (Button) findViewById(R.id.custom_style_one_button);
+        customStyleOneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BStyle style = new BStyle.Builder().setImageGravity(BConstants.BImageGravity.Right).setTextGravity(BConstants.BTextGravity.Left).setDuration(BConstants.BDuration.Long).setImageResource(R.drawable.android_logo).setPaddingInPixels(10, 10).build();
+                BStyle style = new BStyle.Builder().setBackgroundColorValue(0xFF673AB7).setTextGravity(BConstants.BTextGravity.Left).setPadding(5, 5).build();
 
-                Boast.makeText(MainActivity.this, "Boast\nThis is a demo of the Boast library", style);
+                Boast.makeText(MainActivity.this, "This is a Boast with a custom style\nLeft text gravity, smaller padding and different background color", style);
+            }
+        });
+
+        Button customStyleTwoButton = (Button) findViewById(R.id.custom_style_two_button);
+        customStyleTwoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BStyle style = new BStyle.Builder().setTextGravity(BConstants.BTextGravity.Right).setDuration(BConstants.BDuration.Long).setTextSize(16).build();
+
+                Boast.makeText(MainActivity.this, "This is a Boast with a custom style\nRight text gravity, long duration and bigger text size", style);
+            }
+        });
+
+        Button imageLeftButton = (Button) findViewById(R.id.image_left_button);
+        imageLeftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BStyle style = new BStyle.Builder(BStyle.OK).setImageResource(R.drawable.android_logo).build();
+
+                Boast.makeText(MainActivity.this, "This is a Boast with an image to the left", style);
+            }
+        });
+
+        Button imageRightButton = (Button) findViewById(R.id.image_right_button);
+        imageRightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BStyle style = new BStyle.Builder(BStyle.MESSAGE).setImageResource(R.drawable.android_logo).setImageGravity(BConstants.BImageGravity.Right).build();
+
+                Boast.makeText(MainActivity.this, "This is a Boast with an image to the right", style);
             }
         });
     }

@@ -21,12 +21,39 @@
         android:text="@string/different_styles_button_text"/>
 
     <Button
-        android:id="@+id/custom_style_button"
+        android:id="@+id/custom_style_one_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_drawable"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_marginBottom="@dimen/button_margin_bottom"
-        android:text="@string/custom_style_button"/>
+        android:text="@string/custom_style_one_button_text"/>
+
+    <Button
+        android:id="@+id/custom_style_two_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_drawable"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_marginBottom="@dimen/button_margin_bottom"
+        android:text="@string/custom_style_two_button_text"/>
+
+    <Button
+        android:id="@+id/image_left_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_drawable"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_marginBottom="@dimen/button_margin_bottom"
+        android:text="@string/image_left_button_text"/>
+
+    <Button
+        android:id="@+id/image_right_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_drawable"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_marginBottom="@dimen/button_margin_bottom"
+        android:text="@string/image_right_button_text"/>
 
 </LinearLayout>

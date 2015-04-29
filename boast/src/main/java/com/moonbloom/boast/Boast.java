@@ -26,7 +26,7 @@ public final class Boast {
     private Toast internalToast;
 
     static {
-        defaultBStyle = BStyle.INFO;
+        defaultBStyle = BStyle.OK;
     }
     //endregion
 
@@ -49,7 +49,7 @@ public final class Boast {
     /**
      * Set the default used {@link BStyle} when using Boast.makeText() without a {@link BStyle} parameter.
      * <br/>
-     * Default value: {@link BStyle#INFO}.
+     * Default value: {@link BStyle#OK}.
      *
      * @param style The wanted default {@link BStyle}.
      */
@@ -98,7 +98,7 @@ public final class Boast {
      *
      * @param context Used to create internal {@link Toast} & inflate view.
      * @param text Text to show in the {@link Boast}.
-     * @param style {@link BStyle} e.g. {@link BStyle#INFO}).
+     * @param style {@link BStyle} e.g. {@link BStyle#OK}).
      */
     public static void makeText(Context context, CharSequence text, BStyle style) {
         //If custom view resources have been set, it'll use and inflate those, otherwise it'll use the standard setup
@@ -124,7 +124,7 @@ public final class Boast {
      *
      * @param context Used to create internal {@link Toast} & inflate view.
      * @param textResourceId ID of the text resource to show in the {@link Boast}.
-     * @param style {@link BStyle} e.g. {@link BStyle#INFO}).
+     * @param style {@link BStyle} e.g. {@link BStyle#OK}).
      */
     public static void makeText(Context context, int textResourceId, BStyle style) {
         makeText(context, context.getResources().getString(textResourceId), style);
@@ -174,8 +174,8 @@ public final class Boast {
         }
 
         //Set padding
-        int horizontalPaddingDp = convertPxToDp(context, style.horizontalPaddingInPixels);
-        int verticalPaddingDp = convertPxToDp(context, style.verticalPaddingInPixels);
+        int horizontalPaddingDp = convertPxToDp(context, style.horizontalPadding);
+        int verticalPaddingDp = convertPxToDp(context, style.verticalPadding);
         linearLayout.setPadding(horizontalPaddingDp, verticalPaddingDp, horizontalPaddingDp, verticalPaddingDp);
 
         //Only initialize imageView if one is requested
@@ -190,6 +190,7 @@ public final class Boast {
         //Setup layout parameters for textView to correctly position it according to the imageView
         LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
+        textViewParams.weight = 1;
         textViewParams.gravity = Gravity.CENTER_VERTICAL;
 
         //Add the views in the correct order
@@ -247,7 +248,10 @@ public final class Boast {
         }
 
         //Setup layout parameters to correctly position imageView
-        LinearLayout.LayoutParams imageViewParams = new LinearLayout.LayoutParams(150, 150);
+        int imageWidth = convertPxToDp(context, style.imageWidth);
+        int imageHeight = convertPxToDp(context, style.imageHeight);
+        LinearLayout.LayoutParams imageViewParams = new LinearLayout.LayoutParams(imageWidth, imageHeight);
+        imageViewParams.weight = 1;
         int margin = 30;
         int imageGravity = style.imageGravity.getGravity();
         if(imageGravity == BConstants.BImageGravity.Left.getGravity()) {

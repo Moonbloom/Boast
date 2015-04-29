@@ -36,7 +36,7 @@ Create a Boast with a String from your application's resources and a specific BS
 ## Basic Examples
 Currently there are 4 different BStyles you can use out of the box (Or you can create your own, be creative!):
 
-- **BStyle.INFO**
+- **BStyle.OK**
 - **BStyle.MESSAGE**
 - **BStyle.CAUTION**
 - **BStyle.ALERT**
@@ -49,6 +49,7 @@ In general you can modify:
 - Custom Views
 - Displayed image
 - Image position
+- Image size
 
 ## Developer
 - [Kasper Hübner Liholm] (https://www.linkedin.com/profile/view?id=330373856)
