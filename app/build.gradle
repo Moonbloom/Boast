@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "com.boastdemo"
-        minSdkVersion 9
+        minSdkVersion 13
         targetSdkVersion 22
         versionCode 1
-        versionName "0,1.0"
+        versionName "0.2.5"
     }
 
     buildTypes {

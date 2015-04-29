@@ -1,13 +1,12 @@
 package com.moonbloom.boast;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,9 +18,6 @@ public final class Boast {
 
     private static int customLayoutResourceId = 0;
     private static int customTextViewId = 0;
-
-    private static final int imageViewId = 0x100;
-    private static final int textViewId = 0x101;
 
     private static BStyle defaultBStyle;
 
@@ -158,70 +154,63 @@ public final class Boast {
     }
 
     private static void inflateProgrammatically(Context context, CharSequence text, BStyle style) {
-        RelativeLayout relativeLayout = initializeContentView(context, text, style);
+        LinearLayout linearLayout = initializeContentView(context, text, style);
 
-        finalizeToastSetup(context, relativeLayout, style);
+        finalizeToastSetup(context, linearLayout, style);
     }
 
-    @SuppressLint("RtlHardcoded")
-    private static RelativeLayout initializeContentView(Context context, CharSequence text, BStyle style) {
+    private static LinearLayout initializeContentView(Context context, CharSequence text, BStyle style) {
         //Create parent layout
-        RelativeLayout relativeLayout = new RelativeLayout(context);
-        RelativeLayout.LayoutParams relLayoutParams = new RelativeLayout.LayoutParams(style.widthInPixels, style.heightInPixels);
-        relativeLayout.setLayoutParams(relLayoutParams);
+        LinearLayout linearLayout = new LinearLayout(context);
+        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        linearLayout.setLayoutParams(linearLayoutParams);
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
         //Set background color
         if (style.backgroundColorValue != BConstants.NOT_SET) {
-            relativeLayout.setBackgroundColor(style.backgroundColorValue);
+            linearLayout.setBackgroundColor(style.backgroundColorValue);
         } else {
-            relativeLayout.setBackgroundColor(context.getResources().getColor(style.backgroundColorResourceId));
+            linearLayout.setBackgroundColor(context.getResources().getColor(style.backgroundColorResourceId));
         }
 
         //Set padding
         int horizontalPaddingDp = convertPxToDp(context, style.horizontalPaddingInPixels);
         int verticalPaddingDp = convertPxToDp(context, style.verticalPaddingInPixels);
-        relativeLayout.setPadding(horizontalPaddingDp, verticalPaddingDp, horizontalPaddingDp, verticalPaddingDp);
+        linearLayout.setPadding(horizontalPaddingDp, verticalPaddingDp, horizontalPaddingDp, verticalPaddingDp);
 
         //Only initialize imageView if one is requested
         ImageView imageView = null;
         if ((style.imageDrawable != null) || (style.imageResourceId != BConstants.NOT_SET)) {
             imageView = initializeImageView(context, style);
-            relativeLayout.addView(imageView);
         }
 
         //Initialize textView
         TextView textView = initializeTextView(context, style, text);
 
         //Setup layout parameters for textView to correctly position it according to the imageView
-        RelativeLayout.LayoutParams textViewParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        if (imageView != null) {
-            int imageGravity = style.imageGravity.getGravity();
-            if(imageGravity == Gravity.LEFT) {
-                textViewParams.addRule(RelativeLayout.RIGHT_OF, imageView.getId());
-            } else if(imageGravity == Gravity.RIGHT) {
-                textViewParams.addRule(RelativeLayout.LEFT_OF, imageView.getId());
+        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        textViewParams.gravity = Gravity.CENTER_VERTICAL;
+
+        //Add the views in the correct order
+        int imageGravity = style.imageGravity.getGravity();
+        if(imageGravity == BConstants.BImageGravity.Left.getGravity()) {
+            if(imageView != null) {
+                linearLayout.addView(imageView);
+            }
+            linearLayout.addView(textView, textViewParams);
+        } else if(imageGravity == BConstants.BImageGravity.Right.getGravity()) {
+            linearLayout.addView(textView, textViewParams);
+            if(imageView != null) {
+                linearLayout.addView(imageView);
             }
         }
 
-        //Set correct text gravity
-        int textGravity = style.textGravity.getGravity();
-        if ((textGravity & Gravity.CENTER) != 0) {
-            textViewParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-        } else if ((textGravity & Gravity.CENTER_VERTICAL) != 0) {
-            textViewParams.addRule(RelativeLayout.CENTER_VERTICAL);
-        } else if ((textGravity & Gravity.CENTER_HORIZONTAL) != 0) {
-            textViewParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        }
-
-        relativeLayout.addView(textView, textViewParams);
-
-        return relativeLayout;
+        return linearLayout;
     }
 
     private static TextView initializeTextView(Context context, BStyle style, CharSequence text) {
         TextView textView = new TextView(context);
-
-        textView.setId(textViewId);
 
         textView.setText(text);
 
@@ -242,11 +231,8 @@ public final class Boast {
         return textView;
     }
 
-    @SuppressLint("RtlHardcoded")
     private static ImageView initializeImageView(Context context, BStyle style) {
         ImageView imageView = new ImageView(context);
-
-        imageView.setId(imageViewId);
 
         imageView.setAdjustViewBounds(true);
 
@@ -261,16 +247,12 @@ public final class Boast {
         }
 
         //Setup layout parameters to correctly position imageView
-        RelativeLayout.LayoutParams imageViewParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams imageViewParams = new LinearLayout.LayoutParams(150, 150);
         int margin = 30;
         int imageGravity = style.imageGravity.getGravity();
-        if(imageGravity == Gravity.LEFT) {
-            imageViewParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-            imageViewParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+        if(imageGravity == BConstants.BImageGravity.Left.getGravity()) {
             imageViewParams.setMargins(0, 0, margin, 0);
-        } else if(imageGravity == Gravity.RIGHT) {
-            imageViewParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-            imageViewParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+        } else if(imageGravity == BConstants.BImageGravity.Right.getGravity()) {
             imageViewParams.setMargins(margin, 0, 0, 0);
         }
 

@@ -5,27 +5,32 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.moonbloom.boast.BConstants;
 import com.moonbloom.boast.BStyle;
 import com.moonbloom.boast.Boast;
 
 public class MainActivity extends Activity {
 
-    private int counter = 0;
+    private int differentStylesCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        Button button = (Button) findViewById(R.id.demo_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        if(getActionBar() != null) {
+            getActionBar().setTitle(R.string.main_title);
+        }
+
+        Button differentStylesButton = (Button) findViewById(R.id.different_styles_button);
+        differentStylesButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                counter++;
+            public void onClick(View view) {
+                differentStylesCounter++;
 
                 BStyle style;
 
-                switch (counter) {
+                switch (differentStylesCounter) {
                     case 1:
                         style = BStyle.INFO;
                         break;
@@ -47,11 +52,21 @@ public class MainActivity extends Activity {
                         break;
                 }
 
-                Boast.makeText(MainActivity.this, "This is a simple boast demo", style);
+                Boast.makeText(MainActivity.this, "This is a simple Boast", style);
 
-                if(counter == 4) {
-                    counter = 0;
+                if (differentStylesCounter == 4) {
+                    differentStylesCounter = 0;
                 }
+            }
+        });
+
+        Button customStyleButton = (Button) findViewById(R.id.custom_style_button);
+        customStyleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BStyle style = new BStyle.Builder().setImageGravity(BConstants.BImageGravity.Right).setTextGravity(BConstants.BTextGravity.Left).setDuration(BConstants.BDuration.Long).setImageResource(R.drawable.android_logo).setPaddingInPixels(10, 10).build();
+
+                Boast.makeText(MainActivity.this, "Boast\nThis is a demo of the Boast library", style);
             }
         });
     }

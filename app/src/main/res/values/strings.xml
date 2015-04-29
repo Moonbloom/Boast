@@ -1,7 +1,9 @@
 <resources>
 
     <string name="app_name">Boast Demo</string>
+    <string name="main_title">Boast Library Demo</string>
 
-    <string name="button_text">Click me</string>
+    <string name="different_styles_button_text">Standard - Different styles</string>
+    <string name="custom_style_button">Custom style</string>
 
 </resources>

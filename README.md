@@ -11,7 +11,7 @@ You can line up multiple Boasts for display, that will be shown one after anothe
 
 You can check some features in the Boast Demo application that is also posted here in this repository.
 
-### Current version: 0.1.0
+### Current version: 0.2.5
 
 ## Usage
 
@@ -45,7 +45,7 @@ In general you can modify:
 
 - Display duration
 - Padding settings
-- Options for the text to display
+- Text size
 - Custom Views
 - Displayed image
 - Image position
