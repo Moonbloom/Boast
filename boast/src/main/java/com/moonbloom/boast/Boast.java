@@ -1,10 +1,16 @@
 package com.moonbloom.boast;
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.PixelFormat;
+import android.os.Handler;
+import android.os.IBinder;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -275,7 +281,15 @@ public final class Boast {
         finalizeToastSetup(context, layout, style);
     }
 
+    static View testView;
+
     private static void finalizeToastSetup(Context context, View parentLayout, BStyle style) {
+/*        testView = parentLayout;
+
+        Intent intent = new Intent(context, BService.class);
+        context.startService(intent);*/
+
+
         //Setup the toast
         Toast toast = new Toast(context);
         toast.setDuration(style.duration.getDuration());
@@ -286,4 +300,57 @@ public final class Boast {
         boast.show(style.autoCancel);
     }
     //endregion
+
+    public static class BService extends Service {
+
+        private WindowManager windowManager;
+        private View view;
+        private WindowManager.LayoutParams params;
+
+
+        @Override
+        public int onStartCommand (Intent intent, int flags, int startId) {
+            windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
+            view = testView;
+
+            params = new WindowManager.LayoutParams(
+                    //WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    //WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.TYPE_PHONE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    PixelFormat.TRANSLUCENT);
+
+            params.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
+
+            params.horizontalMargin = 50;
+            params.x = 0;
+            params.y = 250;
+
+            windowManager.addView(view, params);
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (view != null) {
+                        windowManager.removeView(view);
+                    }
+
+                    /*Intent intent = new Intent(BService.this, BService.class);
+                    stopService(intent);*/
+                }
+            }, 3000);
+
+            return START_STICKY;
+        }
+
+        @Override
+        public IBinder onBind(Intent intent) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+    }
 }
