@@ -64,9 +64,9 @@ public class MainActivity extends Activity {
         customStyleOneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BStyle style = new BStyle.Builder().setBackgroundColorValue(0xFF673AB7).setTextGravity(BConstants.BTextGravity.Left).setPadding(5, 5).build();
+                BStyle style = new BStyle.Builder().setBackgroundColorValue(0xFF673AB7).setPadding(5, 5).build();
 
-                Boast.makeText(MainActivity.this, "This is a Boast with a custom style\nLeft text gravity, smaller padding and different background color", style);
+                Boast.makeText(MainActivity.this, "This is a Boast with a custom style\nSmaller padding and different background color", style);
             }
         });
 
@@ -74,29 +74,19 @@ public class MainActivity extends Activity {
         customStyleTwoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BStyle style = new BStyle.Builder().setTextGravity(BConstants.BTextGravity.Right).setDuration(BConstants.BDuration.Long).setTextSize(16).build();
+                BStyle style = new BStyle.Builder().setDuration(BConstants.BDuration.Long).setTextSize(16).build();
 
-                Boast.makeText(MainActivity.this, "This is a Boast with a custom style\nRight text gravity, long duration and bigger text size", style);
+                Boast.makeText(MainActivity.this, "This is a Boast with a custom style\nLong duration and bigger text size", style);
             }
         });
 
-        Button imageLeftButton = (Button) findViewById(R.id.image_left_button);
-        imageLeftButton.setOnClickListener(new View.OnClickListener() {
+        Button withImageButton = (Button) findViewById(R.id.with_image_button);
+        withImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BStyle style = new BStyle.Builder(BStyle.OK).setImageResource(R.drawable.android_logo).build();
+                BStyle style = new BStyle.Builder().setImageResource(R.drawable.android_mascot).setBackgroundColor(BConstants.BColor.GreenOk).build();
 
-                Boast.makeText(MainActivity.this, "This is a Boast with an image to the left", style);
-            }
-        });
-
-        Button imageRightButton = (Button) findViewById(R.id.image_right_button);
-        imageRightButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BStyle style = new BStyle.Builder(BStyle.MESSAGE).setImageResource(R.drawable.android_logo).setImageGravity(BConstants.BImageGravity.Right).build();
-
-                Boast.makeText(MainActivity.this, "This is a Boast with an image to the right", style);
+                Boast.makeText(MainActivity.this, "This is a Boast with an image", style);
             }
         });
     }

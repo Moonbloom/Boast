@@ -36,10 +36,10 @@ Create a Boast with a String from your application's resources and a specific BS
 ## Basic Examples
 Currently there are 4 different BStyles you can use out of the box (Or you can create your own, be creative!):
 
-- **BStyle.OK**
-- **BStyle.MESSAGE**
-- **BStyle.CAUTION**
-- **BStyle.ALERT**
+- **BStyle.OK** (Green)
+- **BStyle.MESSAGE** (Blue)
+- **BStyle.CAUTION** (Amber)
+- **BStyle.ALERT** (Red)
 
 In general you can modify:
 
@@ -48,11 +48,10 @@ In general you can modify:
 - Text size
 - Custom Views
 - Displayed image
-- Image position
 - Image size
 
 ## Developer
-- [Kasper Hübner Liholm] (https://www.linkedin.com/profile/view?id=330373856)
+- [Kasper Hï¿½bner Liholm] (https://www.linkedin.com/profile/view?id=330373856)
 
 ## License
 

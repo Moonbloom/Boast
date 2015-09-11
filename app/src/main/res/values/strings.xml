@@ -6,7 +6,6 @@
     <string name="different_styles_button_text">Standard - Different styles</string>
     <string name="custom_style_one_button_text">Custom style one</string>
     <string name="custom_style_two_button_text">Custom style two</string>
-    <string name="image_left_button_text">Image left</string>
-    <string name="image_right_button_text">Image right</string>
+    <string name="with_image_button_text">With image</string>
 
 </resources>

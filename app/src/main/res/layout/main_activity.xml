@@ -39,21 +39,12 @@
         android:text="@string/custom_style_two_button_text"/>
 
     <Button
-        android:id="@+id/image_left_button"
+        android:id="@+id/with_image_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_drawable"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_marginBottom="@dimen/button_margin_bottom"
-        android:text="@string/image_left_button_text"/>
-
-    <Button
-        android:id="@+id/image_right_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_drawable"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_marginBottom="@dimen/button_margin_bottom"
-        android:text="@string/image_right_button_text"/>
+        android:text="@string/with_image_button_text"/>
 
 </LinearLayout>

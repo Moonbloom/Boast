@@ -9,35 +9,35 @@ public final class BStyle {
     //Debug TAG
     private static transient final String TAG = BStyle.class.getSimpleName();
 
-    /** Red background color ({@link BConstants#materialRed}) */
+    /** Red background color ({@link BConstants#materialRedAlert}) */
     public static final BStyle ALERT;
 
-    /** Amber background color ({@link BConstants#materialAmber}) */
+    /** Amber background color ({@link BConstants#materialAmberCaution}) */
     public static final BStyle CAUTION;
 
-    /** Green background color ({@link BConstants#materialGreen}) */
+    /** Green background color ({@link BConstants#materialGreenOk}) */
     public static final BStyle OK;
 
-    /** Blue background color ({@link BConstants#materialBlue}) */
+    /** Blue background color ({@link BConstants#materialBlueMessage}) */
     public static final BStyle MESSAGE;
 
     static {
         ALERT = new Builder()
-                .setBackgroundColorValue(BConstants.materialRed)
+                .setBackgroundColorValue(BConstants.materialRedAlert)
                 .setDuration(BConstants.BDuration.Long)
                 .build();
 
         CAUTION = new Builder()
-                .setBackgroundColorValue(BConstants.materialAmber)
+                .setBackgroundColorValue(BConstants.materialAmberCaution)
                 .setDuration(BConstants.BDuration.Long)
                 .build();
 
         OK = new Builder()
-                .setBackgroundColorValue(BConstants.materialGreen)
+                .setBackgroundColorValue(BConstants.materialGreenOk)
                 .build();
 
         MESSAGE = new Builder()
-                .setBackgroundColorValue(BConstants.materialBlue)
+                .setBackgroundColorValue(BConstants.materialBlueMessage)
                 .build();
     }
 
@@ -59,17 +59,11 @@ public final class BStyle {
     /** The width of the {@link Boast}. */
     final int layoutWidth;
 
-    /** The text's gravity as provided by {@link BConstants.BTextGravity}. */
-    final BConstants.BTextGravity textGravity;
-
     /** The image drawable to display in the {@link Boast}. */
     final Drawable imageDrawable;
 
     /** The id of the image to display in the {@link Boast}. */
     final int imageResourceId;
-
-    /** The image's gravity as provided by {@link BConstants.BImageGravity} */
-    final BConstants.BImageGravity imageGravity;
 
     /** The text size in sp. */
     final int textSize;
@@ -101,10 +95,8 @@ public final class BStyle {
         this.textColorValue = builder.textColorValue;
         this.layoutHeight = builder.layoutHeight;
         this.layoutWidth = builder.layoutWidth;
-        this.textGravity = builder.textGravity;
         this.imageDrawable = builder.imageDrawable;
         this.imageResourceId = builder.imageResourceId;
-        this.imageGravity = builder.imageGravity;
         this.textSize = builder.textSize;
         this.horizontalPadding = builder.horizontalPadding;
         this.verticalPadding = builder.verticalPadding;
@@ -124,10 +116,8 @@ public final class BStyle {
         private int textColorValue;
         private int layoutHeight;
         private int layoutWidth;
-        private BConstants.BTextGravity textGravity;
         private Drawable imageDrawable;
         private int imageResourceId;
-        private BConstants.BImageGravity imageGravity;
         private int textSize;
         private int horizontalPadding;
         private int verticalPadding;
@@ -144,10 +134,8 @@ public final class BStyle {
             textColorValue = BConstants.NOT_SET;
             layoutHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
             layoutWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
-            textGravity = BConstants.BTextGravity.Center;
             imageDrawable = null;
             imageResourceId = BConstants.NOT_SET;
-            imageGravity = BConstants.BImageGravity.Left;
             textSize = 0;
             horizontalPadding = 24;
             verticalPadding = 14;
@@ -169,10 +157,8 @@ public final class BStyle {
             this.textColorValue = baseStyle.textColorValue;
             this.layoutHeight = baseStyle.layoutHeight;
             this.layoutWidth = baseStyle.layoutWidth;
-            this.textGravity = baseStyle.textGravity;
             this.imageDrawable = baseStyle.imageDrawable;
             this.imageResourceId = baseStyle.imageResourceId;
-            this.imageGravity = baseStyle.imageGravity;
             this.textSize = baseStyle.textSize;
             this.horizontalPadding = baseStyle.horizontalPadding;
             this.verticalPadding = baseStyle.verticalPadding;
@@ -277,20 +263,6 @@ public final class BStyle {
         }
 
         /**
-         * Set the textGravity option for the {@link Boast}.
-         * <br/>
-         * Default value: {@link BConstants.BTextGravity#Center}.
-         *
-         * @param textGravity The text's gravity as provided by {@link BConstants.BTextGravity} e.g. {@link BConstants.BTextGravity#Center}.
-         *
-         * @return the {@link Builder}.
-         */
-        public Builder setTextGravity(BConstants.BTextGravity textGravity) {
-            this.textGravity = textGravity;
-            return this;
-        }
-
-        /**
          * Set the imageDrawable option for the {@link Boast}.
          * <br/>
          * Default value: null.
@@ -315,20 +287,6 @@ public final class BStyle {
          */
         public Builder setImageResource(int imageResourceId) {
             this.imageResourceId = imageResourceId;
-            return this;
-        }
-
-        /**
-         * Set the imageGravity to position the image according to the text.
-         * <br/>
-         * Default value: {@link BConstants.BImageGravity#Left}.
-         *
-         * @param imageGravity The image's gravity as provided by {@link BConstants.BImageGravity} e.g. {@link BConstants.BImageGravity#Left}.
-         *
-         * @return The {@link Builder}.
-         */
-        public Builder setImageGravity(BConstants.BImageGravity imageGravity) {
-            this.imageGravity = imageGravity;
             return this;
         }
 
@@ -424,6 +382,20 @@ public final class BStyle {
          */
         public Builder setAutoCancel(boolean enable) {
             this.autoCancel = enable;
+            return this;
+        }
+
+        /**
+         * Set the background color to one of the predefined colors.
+         * <br/>
+         * Default value: {@link BConstants#materialGreenOk} for {@link BStyle#OK}, {@link BConstants#materialBlueMessage} for {@link BStyle#MESSAGE}, {@link BConstants#materialAmberCaution} for {@link BStyle#CAUTION}, {@link BConstants#materialRedAlert} for {@link BStyle#ALERT}.
+         *
+         * @param color The wanted {@link BConstants.BColor} object, referring to the wanted color.
+         *
+         * @return The {@link Builder}.
+         */
+        public Builder setBackgroundColor(BConstants.BColor color) {
+            this.backgroundColorValue = color.getColor();
             return this;
         }
 
