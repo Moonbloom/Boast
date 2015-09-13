@@ -11,7 +11,7 @@ android {
         minSdkVersion 9
         targetSdkVersion 23
         versionCode 1
-        versionName "0.3.0"
+        versionName "0.3.5"
     }
 
     buildTypes {
@@ -32,7 +32,7 @@ dependencies {
 
 def groupId = 'com.moonbloom'
 def artifactId = 'boast'
-def version = '0.3.0'
+def version = '0.3.5'
 
 def localReleaseDest = "${buildDir}/release/${version}"
 
@@ -78,4 +78,29 @@ generateRelease.dependsOn(zipRelease)
 artifacts {
     archives androidSourcesJar
     archives androidJavadocsJar
+}
+
+//TEST
+task(makeJar) << {
+    // Empty. We'll add dependencies for this task below
+}
+
+// Generate jar creation tasks for all build variants
+android.libraryVariants.all { variant ->
+    String taskName = "makeJar${variant.name.capitalize()}"
+
+    // Create a jar by extracting it from the assembled .aar
+    // This ensures that products distributed via .aar and .jar exactly the same bits
+    task (taskName, type: Copy) {
+        String archiveName = "${project.name}-${variant.name}"
+        String outputDir = "${buildDir.getPath()}/outputs"
+
+        dependsOn "assemble${variant.name.capitalize()}"
+        from(zipTree("${outputDir}/aar/${archiveName}.aar"))
+        into("${outputDir}/jar/")
+        include('classes.jar')
+        rename ('classes.jar', "${archiveName}-${variant.mergedFlavor.versionName}.jar")
+    }
+
+    makeJar.dependsOn tasks[taskName]
 }
