@@ -142,6 +142,14 @@ public final class Boast {
         inflateFromResource(context, layoutResource, textViewId, text, defaultBStyle);
     }
 
+    /**
+     * Create and automatically show a {@link Boast}.
+     *
+     * @param context Used to create internal {@link Toast} & inflate view.
+     * @param layoutResource Resource layout e.g. R.layout.custom_toast_layout.
+     * @param textViewId TextView ID e.g. R.id.custom_toast_text.
+     * @param textResourceId ID of the text resource to show in the {@link Boast}.
+     */
     public static void makeText(Context context, int layoutResource, int textViewId, int textResourceId) {
         inflateFromResource(context, layoutResource, textViewId, context.getResources().getString(textResourceId), defaultBStyle);
     }

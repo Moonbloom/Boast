@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
 
-// gradlew clean build generateRelease
+// gradlew -q all
 
 android {
     compileSdkVersion 23
@@ -11,7 +11,7 @@ android {
         minSdkVersion 9
         targetSdkVersion 23
         versionCode 1
-        versionName "0.3.5"
+        versionName "0.4.1"
     }
 
     buildTypes {
@@ -27,14 +27,19 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(dir: "libs", include: ["*.jar"])
 }
 
-def groupId = 'com.moonbloom'
-def artifactId = 'boast'
-def version = '0.3.5'
+def identifier = "com"
+def name = "moonbloom"
+
+def groupId = "${identifier}.${name}"
+def artifactId = "boast"
+def version = "0.4.1"
 
 def localReleaseDest = "${buildDir}/release/${version}"
+def nearFullPath = "${localReleaseDest}/${identifier}/${name}/${artifactId}"
+def fullPath = "${nearFullPath}/${version}"
 
 task androidJavadocs(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
@@ -42,13 +47,24 @@ task androidJavadocs(type: Javadoc) {
 }
 
 task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
-    classifier = 'javadoc'
+    classifier = "javadoc"
     from androidJavadocs.destinationDir
 }
 
 task androidSourcesJar(type: Jar) {
-    classifier = 'sources'
+    classifier = "sources"
     from android.sourceSets.main.java.srcDirs
+}
+
+task makeJar(type: Copy) {
+    from("build/intermediates/bundles/release/")
+    into("${fullPath}/")
+    include("classes.jar")
+    rename ("classes.jar", "${artifactId}-${version}.jar")
+
+    doLast {
+        println "- '${artifactId}-${version}.jar' has been built"
+    }
 }
 
 uploadArchives {
@@ -56,65 +72,48 @@ uploadArchives {
         pom.groupId = groupId
         pom.artifactId = artifactId
         pom.version = version
-        // Add other pom properties here if you want (developer details / licenses)
+
         repository(url: "file://${localReleaseDest}")
+    }
+}
+
+task removeUnwantedFiles(type: Delete) {
+    delete fileTree(dir: "${nearFullPath}/", include: ["*.md5", "*.sha1", "*.aar"])
+    delete fileTree(dir: "${fullPath}/", include: ["*.md5", "*.sha1", "*.aar"])
+
+    doLast {
+        println "- Unwanted files have been removed in these folders:"
+        println "--- ${nearFullPath}"
+        println "--- ${fullPath}"
     }
 }
 
 task zipRelease(type: Zip) {
     from localReleaseDest
     destinationDir buildDir
-    archiveName "release-${version}.zip"
-}
+    archiveName "${artifactId}-${version}.zip"
 
-task generateRelease << {
-    println "Release ${version} can be found at ${localReleaseDest}/"
-    println "Release ${version} zipped can be found ${buildDir}/release-${version}.zip"
+    doLast {
+        println "- Release ${version} can be found at ${localReleaseDest}/"
+        println "- Release ${version} zipped can be found ${buildDir}/release-${version}.zip"
+    }
 }
-
-generateRelease.dependsOn(uploadArchives)
-generateRelease.dependsOn(zipRelease)
 
 artifacts {
     archives androidSourcesJar
     archives androidJavadocsJar
 }
 
-//TEST
-task(makeJar) << {
-    // Empty. We'll add dependencies for this task below
+def buildAliases = [
+        'all' : ['clean', 'build', 'makeJar', 'uploadArchives', 'removeUnwantedFiles', 'zipRelease']
+]
+
+def expandedTaskList = []
+
+gradle.startParameter.taskNames.each {
+    expandedTaskList << (buildAliases[it] ? buildAliases[it] : it)
 }
 
-// Generate jar creation tasks for all build variants
-android.libraryVariants.all { variant ->
-    String taskName = "makeJar${variant.name.capitalize()}"
+gradle.startParameter.taskNames = expandedTaskList.flatten()
 
-    // Create a jar by extracting it from the assembled .aar
-    // This ensures that products distributed via .aar and .jar exactly the same bits
-    task (taskName, type: Copy) {
-        String archiveName = "${project.name}-${variant.name}"
-        String outputDir = "${buildDir.getPath()}/outputs"
-
-        dependsOn "assemble${variant.name.capitalize()}"
-        from(zipTree("${outputDir}/aar/${archiveName}.aar"))
-        into("${outputDir}/jar/")
-        include('classes.jar')
-        rename ('classes.jar', "${archiveName}-${variant.mergedFlavor.versionName}.jar")
-    }
-
-    makeJar.dependsOn tasks[taskName]
-}
-
-//TEST 2
-task clearJar(type: Delete) {
-    delete 'build/outputs/ProjectName.jar'
-}
-
-task makeJarTwo(type: Copy) {
-    from('build/intermediates/bundles/release/')
-    into('build/outputs/')
-    include('classes.jar')
-    rename ('classes.jar', 'ProjectName.jar')
-}
-
-makeJarTwo.dependsOn(clearJar, build)
+//println "Following tasks have been run: ${gradle.startParameter.taskNames}"
