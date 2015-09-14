@@ -104,3 +104,17 @@ android.libraryVariants.all { variant ->
 
     makeJar.dependsOn tasks[taskName]
 }
+
+//TEST 2
+task clearJar(type: Delete) {
+    delete 'build/outputs/ProjectName.jar'
+}
+
+task makeJarTwo(type: Copy) {
+    from('build/intermediates/bundles/release/')
+    into('build/outputs/')
+    include('classes.jar')
+    rename ('classes.jar', 'ProjectName.jar')
+}
+
+makeJarTwo.dependsOn(clearJar, build)
